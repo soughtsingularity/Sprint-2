@@ -65,7 +65,6 @@ CREATE TABLE gafas (
   precio INT NOT NULL,
   id_montura INT NOT NULL,
   id_proveedor INT NOT NULL,
-  id_venta INT NOT NULL,
   FOREIGN KEY (id_montura) REFERENCES monturas (id_montura),
   FOREIGN KEY (id_proveedor) REFERENCES proveedor (id_proveedor)
 );
@@ -121,9 +120,9 @@ INSERT INTO empleados VALUES
 -- gafas
 
 INSERT INTO gafas VALUES 
-(1,'Rayban', 1.5, 2.5, 1, 'Negra', 'Azul', 'Azul', 100, 1, 1, 1),
-(2,'Oklay', 1.5, 2.5, 2, 'Negra', 'Azul', 'Azul', 100, 2, 2, 2),
-(3,'Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 3, 3);
+(1,'Rayban', 1.5, 2.5, 1, 'Negra', 'Azul', 'Azul', 100, 1, 1),
+(2,'Oklay', 1.5, 2.5, 2, 'Negra', 'Azul', 'Azul', 100, 2, 2),
+(3,'Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 3);
 
 -- ventas
 
@@ -131,3 +130,39 @@ INSERT INTO ventas VALUES
 (1, 1, 1, '2020-01-01 01:00:00'),
 (2, 2, 2, '2020-01-01 02:00:00'),
 (3, 3, 3, '2020-01-01 03:00:00');
+
+
+
+/*
+
+Consultas 
+
+Llista el total de compres d’un client/a.
+
+SELECT COUNT(id_venta)
+FROM ventas
+JOIN clientes
+ON clientes.id_cliente = ventas.id_venta
+WHERE clientes.id_cliente = 2
+
+Llista les diferents ulleres que ha venut un empleat durant un any.
+
+SELECT gafas.id_gafa
+FROM gafas
+JOIN ventas
+ON gafas.id_gafa = ventas.gafa_vendida
+JOIN empleados
+ON ventas.empleado_que_vende = empleados.id_empleado
+WHERE YEAR(fecha_venta) < 2021 AND YEAR (fecha_venta) >= 2020 AND empleados.id_empleado = 1
+
+
+Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
+
+SELECT proveedor.nombre
+FROM proveedor
+JOIN gafas
+ON proveedor.id_proveedor = gafas.id_proveedor
+JOIN ventas
+ON ventas.gafa_vendida = gafas.id_gafa
+
+*/

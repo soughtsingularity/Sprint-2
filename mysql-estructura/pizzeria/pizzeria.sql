@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS tienda(
 DROP TABLE IF EXISTS empleados ;
 
 CREATE TABLE IF NOT EXISTS empleados (
-  id_empleados INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_tienda INT NOT NULL,
   empledo_nombre VARCHAR(45) NOT NULL,
   empleado_apellidos VARCHAR(100) NOT NULL,
@@ -153,5 +153,31 @@ INSERT INTO empleados VALUES (3, 1, 'Pedro', 'Gonzalez', '123456789', 666666669,
 INSERT INTO reparto_docmicilio VALUES (1, 1, '2021-01-01 12:00');
 INSERT INTO reparto_docmicilio VALUES (2, 2, '2021-01-01 12:30');
 
+/*
 
+Consultas
 
+Llista quants productes de tipus “Begudes” s'han venut en una determinada localitat.
+
+SELECT COUNT(categoria_productos.id_categoria_producto)
+FROM categoria_productos
+JOIN productos
+ON categoria_productos.id_categoria_producto = productos.id_categoria_producto
+JOIN comandas_productos
+ON productos.id_producto = comandas_productos.id_producto
+JOIN tienda 
+ON comandas_productos.id_comanda = tienda.id_comanda
+WHERE productos.id_categoria_producto = 3 AND tienda.localidad_tienda = 'Madrid';
+
+Llista quantes comandes ha efectuat un determinat empleat/da.
+
+SELECT COUNT(comandas.id_comanda)
+FROM comandas
+JOIN tienda
+ON comandas.id_comanda = tienda.id_comanda
+JOIN
+empleados
+ON tienda.id_tienda = empleados.id_tienda
+WHERE empleados.id_empleado = 1
+
+*/
