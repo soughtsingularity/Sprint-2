@@ -92,7 +92,7 @@ Consultes resum:
 - Retorna totes les dades de l'alumne més jove.
 - Retorna un llistat amb els professors/es que tenen un departament associat i que no imparteixen cap assignatura.
 
-## Nivel 1Nivell 3 si aconsegueixes construir correctament més de 56 consultes correctes (20 d'elles hauran de ser del diagrama "Universidad")!!!
+## Nivel 1
 
 Certificaràs el teu nivell 1 si construeixes 37 consultes correctes, 20 de les quals hauran de ser del diagrama "Universidad".
 
@@ -139,7 +139,10 @@ Nivell 3 si aconsegueixes construir correctament més de 56 consultes correctes 
 
 ```mysql -u root -p```
 
-3. Realiza las consultas
+3. Asegurate de tener los archivos sql con la creación de las tablas de la base de datos
+
+
+4. Realiza las consultas
 
 
 
