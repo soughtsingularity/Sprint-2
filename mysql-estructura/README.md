@@ -87,7 +87,7 @@ Tractarem de fer un model senzill de com seria la base de dades per a una versi�
 NOTA: Un cop creada les bases de dades, omplirem les taules amb dades de prova per tal de verificar que les relacions són correctes.
 
 
-# Consultas Mysql
+# Diseño er y creación de DB Mysql
 
 ## 💻 Tecnologías Utilizadas
 
@@ -104,7 +104,7 @@ NOTA: Un cop creada les bases de dades, omplirem les taules amb dades de prova p
 
 1. Clona el repositorio en tu máquina local:
    ```sh
-   git clone https://github.com/soughtsingularity/Sprint-2/tree/main/Entrega_1_Mysql_Querys
+   git clone https://github.com/soughtsingularity/Sprint-2/tree/main/mysql-estructura
 
 2. Navega al directorio del proyecto:
 
