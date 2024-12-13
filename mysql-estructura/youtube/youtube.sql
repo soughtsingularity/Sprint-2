@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS canales(
   id_canal BIGINT NOT NULL,
   nombre_canal VARCHAR(50) NOT NULL,
   descripcion_canal VARCHAR(255) NOT NULL,
-  fecha_creacion_canal DATETIME NOT NULL,
+  fecha_creacion_canal TIMESTAMP NOT NULL,
   PRIMARY KEY (id_canal),
   FOREIGN KEY (id_canal) REFERENCES usuarios (id_usuario)
 );
@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS playlists;
 CREATE TABLE IF NOT EXISTS playlists (
   id_playlist BIGINT NOT NULL,
   nombre_playlist VARCHAR(45) NOT NULL,
-  fecha_creacion_playlist DATETIME NOT NULL,
+  fecha_creacion_playlist TIMESTAMP NOT NULL,
   estado_playlist INT NOT NULL,
   PRIMARY KEY (id_playlist),
   FOREIGN KEY (id_playlist) REFERENCES usuarios(id_usuario) 
@@ -111,7 +111,7 @@ DROP TABLE IF EXISTS comentarios;
 CREATE TABLE IF NOT EXISTS comentarios (
   id_comentario BIGINT NOT NULL,
   texto_comentario VARCHAR(255) NOT NULL,
-  fecha_creacion_comentario DATETIME NOT NULL,
+  fecha_creacion_comentario TIMESTAMP NOT NULL,
   PRIMARY KEY (id_comentario)
 );
 
@@ -122,7 +122,7 @@ DROP TABLE IF EXISTS videos_usuario;
 CREATE TABLE IF NOT EXISTS videos_usuario (
   id_video BIGINT NOT NULL,
   id_usuario BIGINT NOT NULL,
-  fecha_publicacion_video DATETIME NOT NULL,
+  fecha_publicacion_video TIMESTAMP NOT NULL,
   PRIMARY KEY (id_video, id_usuario),
   UNIQUE (id_video, id_usuario, fecha_publicacion_video),
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
@@ -163,7 +163,7 @@ DROP TABLE IF EXISTS usuarios_suscritos_canal;
 CREATE TABLE IF NOT EXISTS usuarios_suscritos_canal (
   id_usuario BIGINT NOT NULL,
   id_canal BIGINT NOT NULL,
-  fecha_suscripcion DATETIME NOT NULL,
+  fecha_suscripcion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_usuario, id_canal),
   UNIQUE(id_usuario, id_canal, fecha_suscripcion),
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS video_reaccion (
   tipo_reaccion INT NOT NULL,
   id_usuario BIGINT NOT NULL,
   id_video BIGINT NOT NULL,
-  fecha_reaccion DATETIME NOT NULL,
+  fecha_reaccion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_reaccion, id_usuario, id_video, tipo_reaccion),
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
   FOREIGN KEY (id_video) REFERENCES videos(id_video),
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS comentarios_video_reaccion (
   tipo_reaccion INT NOT NULL,
   id_comentario BIGINT NOT NULL,
   id_usuario BIGINT NOT NULL,
-  fecha_comentario_reaccion DATETIME NOT NULL,
+  fecha_comentario_reaccion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_comentarios_video_reaccion, id_comentario, id_usuario, tipo_reaccion),
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
   FOREIGN KEY (id_comentario) REFERENCES comentarios(id_comentario),
