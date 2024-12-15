@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS categoria_productos (
     nombre_categoria_producto VARCHAR(45) NOT NULL
 );
 
--- categoria_pizza`
+-- categoria_pizza
 DROP TABLE IF EXISTS categorias_pizza ;
 
 CREATE TABLE IF NOT EXISTS categorias_pizza(
