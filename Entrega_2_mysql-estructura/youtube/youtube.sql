@@ -7,7 +7,7 @@ USE youtube;
 DROP TABLE IF EXISTS usuarios;
 
 CREATE TABLE IF NOT EXISTS usuarios (
-  id_usuario BIGINT NOT NULL,
+  id_usuario BIGINT NOT NULL AUTO_INCREMENT,
   email_usuario VARCHAR(100) NOT NULL UNIQUE,
   password_susuario VARCHAR(150) NOT NULL,
   nombre_susuario VARCHAR(100) NOT NULL,
@@ -53,12 +53,13 @@ CREATE TABLE IF NOT EXISTS estados_playlist (
 DROP TABLE IF EXISTS canales;
 
 CREATE TABLE IF NOT EXISTS canales(
-  id_canal BIGINT NOT NULL,
+  id_canal BIGINT NOT NULL AUTO_INCREMENT,
+  id_usuario BIGINT NOT NULL,
   nombre_canal VARCHAR(50) NOT NULL,
   descripcion_canal VARCHAR(255) NOT NULL,
   fecha_creacion_canal TIMESTAMP NOT NULL,
   PRIMARY KEY (id_canal),
-  FOREIGN KEY (id_canal) REFERENCES usuarios (id_usuario)
+  FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
 );
 
 -- Playlists
@@ -66,12 +67,13 @@ CREATE TABLE IF NOT EXISTS canales(
 DROP TABLE IF EXISTS playlists;
 
 CREATE TABLE IF NOT EXISTS playlists (
-  id_playlist BIGINT NOT NULL,
+  id_playlist BIGINT NOT NULL AUTO_INCREMENT,
+  id_canal BIGINT NOT NULL,
   nombre_playlist VARCHAR(45) NOT NULL,
   fecha_creacion_playlist TIMESTAMP NOT NULL,
   estado_playlist INT NOT NULL,
   PRIMARY KEY (id_playlist),
-  FOREIGN KEY (id_playlist) REFERENCES usuarios(id_usuario) 
+  FOREIGN KEY (id_canal) REFERENCES canales(id_canal) ON DELETE CASCADE
 );
 
 -- Videos
@@ -79,7 +81,7 @@ CREATE TABLE IF NOT EXISTS playlists (
 DROP TABLE IF EXISTS videos;
 
 CREATE TABLE IF NOT EXISTS videos (
-  id_video BIGINT NOT NULL,
+  id_video BIGINT NOT NULL AUTO_INCREMENT,
   titulo_video VARCHAR(100) NOT NULL,
   descripcion_video VARCHAR(255) NOT NULL,
   tamano_video FLOAT NOT NULL,
@@ -91,7 +93,7 @@ CREATE TABLE IF NOT EXISTS videos (
   numero_dislikes DOUBLE NOT NULL,
   estado_video INT NOT NULL,
   PRIMARY KEY (id_video),
-  FOREIGN KEY (estado_video) REFERENCES estados_video(id_estados_video)
+  FOREIGN KEY (estado_video) REFERENCES estados_video(id_estados_video) ON DELETE CASCADE
 );
 
 -- Etiquetas
@@ -99,7 +101,7 @@ CREATE TABLE IF NOT EXISTS videos (
 DROP TABLE IF EXISTS etiquetas;
 
 CREATE TABLE IF NOT EXISTS etiquetas (
-  id_etiqueta BIGINT NOT NULL,
+  id_etiqueta BIGINT NOT NULL AUTO_INCREMENT,
   nombre_etiqueta VARCHAR(100) NOT NULL,
   PRIMARY KEY (id_etiqueta)
 );
@@ -109,7 +111,7 @@ CREATE TABLE IF NOT EXISTS etiquetas (
 DROP TABLE IF EXISTS comentarios;
 
 CREATE TABLE IF NOT EXISTS comentarios (
-  id_comentario BIGINT NOT NULL,
+  id_comentario BIGINT NOT NULL AUTO_INCREMENT,
   texto_comentario VARCHAR(255) NOT NULL,
   fecha_creacion_comentario TIMESTAMP NOT NULL,
   PRIMARY KEY (id_comentario)
@@ -125,9 +127,8 @@ CREATE TABLE IF NOT EXISTS videos_usuario (
   fecha_publicacion_video TIMESTAMP NOT NULL,
   PRIMARY KEY (id_video, id_usuario),
   UNIQUE (id_video, id_usuario, fecha_publicacion_video),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-  FOREIGN KEY (id_video) REFERENCES videos(id_video)
-);
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+  );
 
 -- Videos playlist
 
@@ -137,8 +138,9 @@ CREATE TABLE IF NOT EXISTS videos_playlist (
   id_videos_playlist BIGINT NOT NULL AUTO_INCREMENT,
   id_playlist BIGINT NOT NULL,
   id_video BIGINT NOT NULL,
-  PRIMARY KEY (id_videos_playlist, id_playlist, id_video),
-  FOREIGN KEY (id_video) REFERENCES videos(id_video),
+  PRIMARY KEY (id_videos_playlist),
+  UNIQUE (id_playlist, id_video),
+  FOREIGN KEY (id_video) REFERENCES videos(id_video) ON DELETE CASCADE,
   FOREIGN KEY (id_playlist) REFERENCES playlists (id_playlist)
 );
 
@@ -151,9 +153,10 @@ CREATE TABLE IF NOT EXISTS etiquetas_videos (
   id_etiquetas_videos BIGINT NOT NULL,
   id_etiqueta BIGINT NOT NULL,
   id_video BIGINT NOT NULL,
-  PRIMARY KEY (id_etiquetas_videos, id_etiqueta, id_video),
-  FOREIGN KEY (id_etiqueta) REFERENCES etiquetas(id_etiqueta),
-  FOREIGN KEY (id_video) REFERENCES videos(id_video)
+  PRIMARY KEY (id_etiquetas_videos),
+  UNIQUE (id_etiqueta, id_video),
+  FOREIGN KEY (id_etiqueta) REFERENCES etiquetas(id_etiqueta) ON DELETE CASCADE,
+  FOREIGN KEY (id_video) REFERENCES videos(id_video) ON DELETE CASCADE
 );
 
 -- Usuarios suscritos a un canal
@@ -166,8 +169,8 @@ CREATE TABLE IF NOT EXISTS usuarios_suscritos_canal (
   fecha_suscripcion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_usuario, id_canal),
   UNIQUE(id_usuario, id_canal, fecha_suscripcion),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-  FOREIGN KEY (id_canal) REFERENCES canales(id_canal)
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_canal) REFERENCES canales(id_canal) ON DELETE CASCADE
 );
 
 -- Video reacción
@@ -175,15 +178,15 @@ CREATE TABLE IF NOT EXISTS usuarios_suscritos_canal (
 DROP TABLE IF EXISTS video_reaccion;
 
 CREATE TABLE IF NOT EXISTS video_reaccion (
-  id_reaccion BIGINT NOT NULL AUTO_INCREMENT,
+  id_reaccion BIGINT NOT NULL,
   tipo_reaccion INT NOT NULL,
   id_usuario BIGINT NOT NULL,
   id_video BIGINT NOT NULL,
   fecha_reaccion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_reaccion, id_usuario, id_video, tipo_reaccion),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-  FOREIGN KEY (id_video) REFERENCES videos(id_video),
-  FOREIGN KEY (tipo_reaccion) REFERENCES tipo_reaccion(id_reaccion)
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_video) REFERENCES videos(id_video) ON DELETE CASCADE,
+  FOREIGN KEY (tipo_reaccion) REFERENCES tipo_reaccion(id_reaccion) ON DELETE CASCADE
 );
 
 -- Comentarios reacción
@@ -191,15 +194,15 @@ CREATE TABLE IF NOT EXISTS video_reaccion (
 DROP TABLE IF EXISTS comentarios_video_reaccion;
 
 CREATE TABLE IF NOT EXISTS comentarios_video_reaccion (
-  id_comentarios_video_reaccion BIGINT NOT NULL AUTO_INCREMENT,
+  id_comentarios_video_reaccion BIGINT NOT NULL,
   tipo_reaccion INT NOT NULL,
   id_comentario BIGINT NOT NULL,
   id_usuario BIGINT NOT NULL,
   fecha_comentario_reaccion TIMESTAMP NOT NULL,
   PRIMARY KEY (id_comentarios_video_reaccion, id_comentario, id_usuario, tipo_reaccion),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-  FOREIGN KEY (id_comentario) REFERENCES comentarios(id_comentario),
-  FOREIGN KEY (tipo_reaccion) REFERENCES tipo_reaccion(id_reaccion)
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_comentario) REFERENCES comentarios(id_comentario) ON DELETE CASCADE,
+  FOREIGN KEY (tipo_reaccion) REFERENCES tipo_reaccion(id_reaccion) ON DELETE CASCADE
 );
 
 
@@ -220,13 +223,13 @@ INSERT INTO estados_playlist (id_estado_playlist, tipo_estado) VALUES
   (1, 'publico'),
   (2, 'privado');
 
-INSERT INTO canales (id_canal, nombre_canal, descripcion_canal, fecha_creacion_canal) VALUES
-  (1, 'La merced', 'Un canal sobre religión tecnológica.', '2021-01-01 10:00:00'),
-  (2, 'El canal del guapo', 'Los viajes del guapo.', '2021-02-02 11:00:00');
+INSERT INTO canales (id_canal, id_usuario, nombre_canal, descripcion_canal, fecha_creacion_canal) VALUES
+  (1, 1, 'La merced', 'Un canal sobre religión tecnológica.', '2021-01-01 10:00:00'),
+  (2, 2, 'El canal del guapo', 'Los viajes del guapo.', '2021-02-02 11:00:00');
 
-INSERT INTO playlists (id_playlist, nombre_playlist, fecha_creacion_playlist, estado_playlist) VALUES
-  (1, 'Noticias', '2021-01-05 14:00:00', 1),
-  (2, 'De incógnito', '2021-02-06 15:00:00', 2);
+INSERT INTO playlists (id_playlist, id_canal, nombre_playlist, fecha_creacion_playlist, estado_playlist) VALUES
+  (1, 1, 'Noticias', '2021-01-05 14:00:00', 1),
+  (2, 2, 'De incógnito', '2021-02-06 15:00:00', 2);
 
 INSERT INTO videos (id_video, titulo_video, descripcion_video, tamano_video, nombre_archivo_video, duracion_video, thumbnail_video, numero_reproducciones, numero_likes, numero_dislikes, estado_video) VALUES
   (1, 'Tormenta explosiva', 'Tormenta explosive en directo.', 500.0, 'tormenta.mp4', 600.0, 0x0, 1000, 150, 10, 1),
