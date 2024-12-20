@@ -14,11 +14,9 @@ CREATE TABLE IF NOT EXISTS categoria_productos (
 -- categoria_pizza
 DROP TABLE IF EXISTS categorias_pizza ;
 
-CREATE TABLE IF NOT EXISTS categorias_pizza(
+CREATE TABLE IF NOT EXISTS categorias_pizza (
   id_categoria_pizza INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nombre_categoria_pizza VARCHAR(45) NOT NULL,
-  id_categoria_producto INT NOT NULL,
-  FOREIGN KEY (id_categoria_producto) REFERENCES categoria_productos (id_categoria_producto)
+  nombre_categoria_pizza VARCHAR(45) NOT NULL
 );
 
 -- clientes
@@ -58,13 +56,15 @@ CREATE TABLE IF NOT EXISTS productos (
   id_producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nombre_producto VARCHAR(50) NOT NULL,
   descripcion_producto VARCHAR(200) NULL,
-  imagen_producto BLOB NOT NULL,
+  imagen_producto VARCHAR(100) NOT NULL,
   precio_producto FLOAT NOT NULL,
   id_categoria_producto INT NOT NULL,
   id_categoria_pizza INT,
   FOREIGN KEY (id_categoria_producto) REFERENCES categoria_productos(id_categoria_producto),
   FOREIGN KEY (id_categoria_pizza) REFERENCES categorias_pizza (id_categoria_pizza)
 );
+
+-- comandas_productos
 
 DROP TABLE IF EXISTS comandas_productos;
 
@@ -97,7 +97,7 @@ DROP TABLE IF EXISTS empleados ;
 CREATE TABLE IF NOT EXISTS empleados (
   id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_tienda INT NOT NULL,
-  empledo_nombre VARCHAR(45) NOT NULL,
+  empleado_nombre VARCHAR(45) NOT NULL,
   empleado_apellidos VARCHAR(100) NOT NULL,
   empleado_nif VARCHAR(10) NOT NULL,
   empleado_telefono INT NOT NULL,
@@ -112,46 +112,61 @@ DROP TABLE IF EXISTS reparto_docmicilio;
 CREATE TABLE IF NOT EXISTS reparto_docmicilio (
   id_reparto_docmicilio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_repartidor INT NOT NULL,
-  fecha_hora_reparrto DATETIME NOT NULL,
-  FOREIGN KEY (id_repartidor) REFERENCES empleados(id_empleados)
+  fecha_hora_reparto DATETIME NOT NULL,
+  FOREIGN KEY (id_repartidor) REFERENCES empleados(id_empleado)
 );
 
-INSERT INTO categoria_productos VALUES (1, 'Pizza');
-INSERT INTO categoria_productos VALUES (2, 'Hamburguesas');
-INSERT INTO categoria_productos VALUES (3, 'Bebidas');
+INSERT INTO categoria_productos(nombre_categoria_producto) VALUES 
+('Pizza'), 
+('Hamburguesas'), 
+('Bebidas');
 
-INSERT INTO categorias_pizza VALUES (1, 'Invierno', 1);
-INSERT INTO categorias_pizza VALUES (2, 'Invierno', 1);
-INSERT INTO categorias_pizza VALUES (3, 'Invierno', 1);
-INSERT INTO categorias_pizza VALUES (4, 'Invierno', 1);
+INSERT INTO categorias_pizza(nombre_categoria_pizza) VALUES 
+('Invierno'),
+('Primavera'), 
+('Verano'), 
+('Otoño');
 
-INSERT INTO clientes VALUES (1, 'Juan', 'Perez', 'Calle de la piruleta', 28000, 'Madrid', 'Madrid', 666666667);
-INSERT INTO clientes VALUES (2, 'Maria', 'Garcia', 'Calle de la piruleta2', 28000, 'Madrid', 'Madrid', 666666668);
-INSERT INTO clientes VALUES (3, 'Pedro', 'Gonzalez', 'Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 666666669);
 
-INSERT INTO comandas VALUES (1, '12:00', 1, 0, 10, 1);
-INSERT INTO comandas VALUES (2, '12:00', 0, 1, 10, 2);
-INSERT INTO comandas VALUES (3, '12:00', 1, 0, 10, 3);
+INSERT INTO clientes (nombre_cliente, apellidos_cliente, direccion_cliente, cp_cliente, localidad_cliente, provincia_cliente, telefono_cliente) VALUES
+('Juan', 'Perez', 'Calle de la piruleta', 28000, 'Madrid', 'Madrid', 666666667),
+('Maria', 'Garcia', 'Calle de la piruleta2', 28000, 'Madrid', 'Madrid', 666666668),
+('Pedro', 'Gonzalez', 'Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 666666669);
 
-INSERT INTO productos VALUES (1, 'Pizza', 'Pizza de queso', 'imagen', 10, 1, 1);
-INSERT INTO productos VALUES (2, 'Hamburguesa', 'Cheese-King', 'imagen', 10, 2, NULL);
-INSERT INTO productos VALUES (3, 'Coca-cola', 'Zero', 'imagen', 2.5, 3, NULL);
-INSERT INTO productos VALUES (4, 'Pizza', 'Pizza de pollo', 'imagen', 10, 1, 1);
 
-INSERT INTO comandas_productos VALUES (1, 1, 1, 3);
-INSERT INTO comandas_productos VALUES (2, 2, 2, 4);
-INSERT INTO comandas_productos VALUES (3, 3, 3, 2);
+INSERT INTO comandas (hora_comanda, domicilio_comanda, tienda_comanda, precio_comanda, id_cliente) VALUES
+('12:00', 1, 0, 10, 1),
+('12:00', 0, 1, 10, 2),
+('12:00', 1, 0, 10, 3);
 
-INSERT INTO tienda VALUES (1, 'Calle de la piruleta', 28000, 'Madrid', 'Madrid', 1);
-INSERT INTO tienda VALUES (2, 'Calle de la piruleta2', 28000, 'Madrid', 'Madrid', 2);
-INSERT INTO tienda VALUES (3, 'Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 3);
+INSERT INTO productos (nombre_producto, descripcion_producto, imagen_producto, precio_producto, id_categoria_producto, id_categoria_pizza) VALUES
+('Pizza quesada', 'Pizza de queso', 'www.imagen1.com', 10, 1, 1),
+('Hamburguesa XXL', 'Cheese-King', 'www.imagen2.com', 10, 2, NULL),
+('Coca-cola Zero', 'Zero', 'www.imagen3.com', 2.5, 3, NULL),
+('Pizza ChikenRun', 'Pizza de pollo', 'www.imagen4.com', 10, 1, 1);
 
-INSERT INTO empleados VALUES (1, 1, 'Juan', 'Perez', '123456789', 666666667, 1, 0);
-INSERT INTO empleados VALUES (2, 1, 'Maria', 'Garcia', '123456789', 666666668, 0, 1);
-INSERT INTO empleados VALUES (3, 1, 'Pedro', 'Gonzalez', '123456789', 666666669, 1, 0);
 
-INSERT INTO reparto_docmicilio VALUES (1, 1, '2021-01-01 12:00');
-INSERT INTO reparto_docmicilio VALUES (2, 2, '2021-01-01 12:30');
+
+INSERT INTO comandas_productos (id_comanda, id_producto, cantidad_productos) VALUES
+(1, 1, 3),
+(2, 2, 4),
+(3, 3, 2);
+
+
+INSERT INTO tienda (direccion_tienda, cp, localidad_tienda, provincia, id_comanda) VALUES
+('Calle de la piruleta', 28000, 'Madrid', 'Madrid', 1),
+('Calle de la piruleta2', 28000, 'Madrid', 'Madrid', 2),
+('Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 3);
+
+INSERT INTO empleados (id_tienda, empleado_nombre, empleado_apellidos, empleado_nif, empleado_telefono, empleado_cocinero, empleado_repartidor) VALUES
+(1, 'Juan', 'Perez', '123456789', 666666667, 1, 0),
+(2, 'Maria', 'Garcia', '123456789', 666666668, 0, 1),
+(3, 'Pedro', 'Gonzalez', '123456789', 666666669, 1, 0);
+
+
+INSERT INTO reparto_docmicilio (id_repartidor, fecha_hora_reparto) VALUES
+(1, '2021-01-01 12:00'),
+(2, '2021-01-01 12:30');
 
 /*
 
