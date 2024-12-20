@@ -75,39 +75,43 @@ CREATE TABLE ventas (
   id_venta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   gafa_vendida INT NOT NULL,
   empleado_que_vende INT NOT NULL,
+  cliente_que_compra INT NOT NULL,
   fecha_venta DATETIME NOT NULL,
   FOREIGN KEY (gafa_vendida) REFERENCES gafas (id_gafa),
   FOREIGN KEY (empleado_que_vende) REFERENCES empleados (id_empleado),
-  FOREIGN KEY (id_venta) REFERENCES clientes (id_cliente)
+  FOREIGN KEY (cliente_que_compra) REFERENCES clientes (id_cliente),
+  UNIQUE (gafa_vendida, empleado_que_vende, cliente_que_compra)
 );
 
 -- monturas
 
-INSERT INTO monturas VALUES 
-(1, 'Flotante'),
-(2, 'Pasta'),
-(3, 'Metálica');
+INSERT INTO monturas (tipo_montura) VALUES 
+('Flotante'),
+('Pasta'),
+('Metálica');
 
 -- clientes
 
-INSERT INTO clientes VALUES 
-(1, 'Calle de la piruleta', '666666666', 'cliente1@gmail.com', '2020-01-01', 0, NULL),
-(2, 'Calle eufrasio', '345432345', 'cliente2@gmail.com', '2020-01-01', 0, NULL),
-(3, 'Calle de la piruleta', '666666456', 'cliente2@gmail.com', '2020-01-01', 1, 1);
+
+
+INSERT INTO clientes (direccion_cliente,telefono_cliente, correo_electronico_cliente, fecha_registro_cliente, nuevo_cliente, id_cliente_que_recomienda) VALUES 
+('Calle de la piruleta', '666666666', 'cliente1@gmail.com', '2020-01-01', 0, NULL),
+('Calle eufrasio', '345432345', 'cliente2@gmail.com', '2020-01-01', 0, NULL),
+('Calle de la piruleta', '666666456', 'cliente2@gmail.com', '2020-01-01', 1, 1);
 
 -- direccion_proveedor
 
-INSERT INTO direccion_proveedor VALUES 
-(1,'Calle de la piruleta1', 1, 1, 'A', 'Madrid'),
-(2,'Calle de la piruleta2', 2, 1, 'A', 'Barcelona'),
-(3,'Calle de la piruleta3', 3, 1, 'A', 'Málaga');
+INSERT INTO direccion_proveedor (calle, numero, piso, puerta, ciudad ) VALUES 
+('Calle de la piruleta1', 1, 1, 'A', 'Madrid'),
+('Calle de la piruleta2', 2, 1, 'A', 'Barcelona'),
+('Calle de la piruleta3', 3, 1, 'A', 'Málaga');
 
 -- proveedor
 
-INSERT INTO proveedor VALUES 
-(1,'Proveedor1', 1, '666666667', '666666666', '123456789A'),
-(2,'Proveedor2', 2, '666666668', '666666666', '123456789B'),
-(3,'Proveedor3', 3, '666666669', '666666666', '123456789C');
+INSERT INTO proveedor(nombre,direccion,telefono,fax, nif) VALUES 
+('Proveedor1', 1, '666666667', '666666666', '123456789A'),
+('Proveedor2', 2, '666666668', '666666666', '123456789B'),
+('Proveedor3', 3, '666666669', '666666666', '123456789C');
 
 -- empleados
 
@@ -119,14 +123,15 @@ INSERT INTO empleados VALUES
 
 -- gafas
 
-INSERT INTO gafas VALUES 
-(1,'Rayban', 1.5, 2.5, 1, 'Negra', 'Azul', 'Azul', 100, 1, 1),
-(2,'Oklay', 1.5, 2.5, 2, 'Negra', 'Azul', 'Azul', 100, 2, 2),
-(3,'Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 3);
+
+INSERT INTO gafas(marca_gafa, graducion_izq, graducacion_drc,tipo_montura, color_montura, color_lente_izq, color_lente_drc, precio, id_montura, id_proveedor) VALUES 
+('Rayban', 1.5, 2.5, 1, 'Negra', 'Azul', 'Azul', 100, 1, 1),
+('Oklay', 1.5, 2.5, 2, 'Negra', 'Azul', 'Azul', 100, 2, 2),
+('Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 3);
 
 -- ventas
 
-INSERT INTO ventas VALUES 
+INSERT INTO ventas(gafa_vendida, empleado_que_vende, cliente_que_compra, fecha_venta) VALUES 
 (1, 1, 1, '2020-01-01 01:00:00'),
 (2, 2, 2, '2020-01-01 02:00:00'),
 (3, 3, 3, '2020-01-01 03:00:00');
