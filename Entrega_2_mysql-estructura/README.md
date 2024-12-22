@@ -2,9 +2,10 @@
 
 Modelarem diversos diagrames entitat-relació.
 
-## Nivel 1
+## Nivel 1 ✔️
 
-### Exercici 1 - Òptica
+### Exercici 1 - Òptica ✔️
+
 Una òptica, anomenada “Cul d'Ampolla”, vol informatitzar la gestió dels clients/es i vendes d'ulleres.
 
 En primer lloc, l'òptica vol saber quin és el proveïdor de cadascuna de les ulleres. En concret vol saber de cada proveïdor: El nom, l'adreça (carrer, número, pis, porta, ciutat, codi postal i país), telèfon, fax, NIF.
@@ -15,7 +16,8 @@ Dels clients/es vol emmagatzemar: El nom, l'adreça postal, el telèfon, el corr
 Quan arriba un/a client/a nou, emmagatzemar el/la client/a que li ha recomanat l'establiment (sempre que algú li hagi recomanat).
 El nostre sistema haurà d’indicar qui ha sigut l’empleat/da que ha venut cada ullera. Defineix un període de temps de vendes.
 
-### Exercici 2 - Pizzeria
+### Exercici 2 - Pizzeria ✔️
+
 T’han contractat per a dissenyar una web que permeti fer comandes de menjar a domicili per Internet.
 
 Tingues en compte les següents indicacions per a modelar com seria la base de dades del projecte:
@@ -36,9 +38,9 @@ Tingues en compte les següents indicacions per a modelar com seria la base de d
 
 - Si treballa com a cuiner/a o repartidor/a. Per a les comandes de repartiment a domicili interessa guardar qui és el repartidor/a que fa el lliurament de la comanda i la data/hora del moment del lliurament.
 
-## Nivel 2
+## Nivel 2 ✔️
 
-### Exercici 1 - YouTube
+### Exercici 1 - YouTube ✔️
 
 Tractarem de fer un model senzill de com seria la base de dades per a una versió reduïda de YouTube.
 
@@ -58,9 +60,9 @@ Tractarem de fer un model senzill de com seria la base de dades per a una versi�
 
 - Un usuari/ària pot marcar un comentari com m'agrada o no m'agrada. Caldrà portar un registre dels usuaris/es que han marcat un comentari com m'agrada/no m'agrada, i en quina data/hora ho van fer.
 
-## Nivel 3
+## Nivel 3 ✔️
 
-### Exercici 1 - Spotify
+### Exercici 1 - Spotify ✔️
 
 - Tractarem de fer un model senzill de com seria la base de dades necessària per a Spotify.
 
