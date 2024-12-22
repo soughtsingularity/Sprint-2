@@ -88,7 +88,7 @@ Tractarem de fer un model senzill de com seria la base de dades per a una versi√
 
 1. Clona el repositorio en tu m√°quina local:
    ```sh
-   git clone https://github.com/soughtsingularity/Sprint-2/tree/main/mysql-estructura
+   git clone https://github.com/soughtsingularity/Sprint-2/tree/main/Entrega_3_mongodb_estructura
 
 2. Navega al directorio del proyecto:
 
