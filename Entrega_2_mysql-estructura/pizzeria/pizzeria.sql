@@ -42,10 +42,12 @@ CREATE TABLE IF NOT EXISTS comandas (
   id_comanda INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   hora_comanda VARCHAR(45) NOT NULL,
   domicilio_comanda BOOLEAN NOT NULL,
-  tienda_comanda TINYINT NOT NULL,
+  id_tienda INT NOT NULL,
   precio_comanda FLOAT NOT NULL,
   id_cliente INT NOT NULL,
+  FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente),
   FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente)
+
 );
 
 -- producto
@@ -86,9 +88,7 @@ CREATE TABLE IF NOT EXISTS tienda(
   direccion_tienda VARCHAR(150) NOT NULL,
   cp INT NOT NULL,
   localidad_tienda VARCHAR(100) NOT NULL,
-  provincia VARCHAR(100) NOT NULL,
-  id_comanda INT NOT NULL,
-  FOREIGN KEY (id_comanda) REFERENCES comandas (id_comanda)
+  provincia VARCHAR(100) NOT NULL
 );
 
 -- empleados
@@ -97,12 +97,12 @@ DROP TABLE IF EXISTS empleados ;
 CREATE TABLE IF NOT EXISTS empleados (
   id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_tienda INT NOT NULL,
-  empleado_nombre VARCHAR(45) NOT NULL,
-  empleado_apellidos VARCHAR(100) NOT NULL,
-  empleado_nif VARCHAR(10) NOT NULL,
-  empleado_telefono INT NOT NULL,
-  empleado_cocinero TINYINT NOT NULL,
-  empleado_repartidor TINYINT NULL,
+  nombre VARCHAR(45) NOT NULL,
+  apellidos VARCHAR(100) NOT NULL,
+  nif VARCHAR(10) NOT NULL,
+  telefono INT NOT NULL,
+  cocinero TINYINT NOT NULL,
+  repartidor TINYINT NULL,
   FOREIGN KEY (id_tienda) REFERENCES tienda (id_tienda)
 );
 
@@ -112,8 +112,10 @@ DROP TABLE IF EXISTS reparto_docmicilio;
 CREATE TABLE IF NOT EXISTS reparto_docmicilio (
   id_reparto_docmicilio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_repartidor INT NOT NULL,
+  id_comanda INT NOT NULL,
   fecha_hora_reparto DATETIME NOT NULL,
-  FOREIGN KEY (id_repartidor) REFERENCES empleados(id_empleado)
+  FOREIGN KEY (id_repartidor) REFERENCES empleados(id_empleado),
+  FOREIGN KEY (id_comanda) REFERENCES comandas(id_comanda)
 );
 
 INSERT INTO categoria_productos(nombre_categoria_producto) VALUES 
@@ -134,10 +136,10 @@ INSERT INTO clientes (nombre_cliente, apellidos_cliente, direccion_cliente, cp_c
 ('Pedro', 'Gonzalez', 'Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 666666669);
 
 
-INSERT INTO comandas (hora_comanda, domicilio_comanda, tienda_comanda, precio_comanda, id_cliente) VALUES
-('12:00', 1, 0, 10, 1),
-('12:00', 0, 1, 10, 2),
-('12:00', 1, 0, 10, 3);
+INSERT INTO comandas (hora_comanda, domicilio_comanda, id_tienda, precio_comanda, id_cliente) VALUES
+('12:00', 1, 1, 10, 1),
+('12:00', 0, 2, 10, 2),
+('12:00', 1, 3, 10, 3);
 
 INSERT INTO productos (nombre_producto, descripcion_producto, imagen_producto, precio_producto, id_categoria_producto, id_categoria_pizza) VALUES
 ('Pizza quesada', 'Pizza de queso', 'www.imagen1.com', 10, 1, 1),
@@ -153,21 +155,20 @@ INSERT INTO comandas_productos (id_comanda, id_producto, cantidad_productos) VAL
 (3, 3, 2);
 
 
-INSERT INTO tienda (direccion_tienda, cp, localidad_tienda, provincia, id_comanda) VALUES
-('Calle de la piruleta', 28000, 'Madrid', 'Madrid', 1),
-('Calle de la piruleta2', 28000, 'Madrid', 'Madrid', 2),
-('Calle de la piruleta3', 28000, 'Madrid', 'Madrid', 3);
+INSERT INTO tienda (direccion_tienda, cp, localidad_tienda, provincia) VALUES
+('Calle de la piruleta', 28000, 'Madrid', 'Madrid'),
+('Calle de la piruleta2', 28000, 'Madrid', 'Madrid'),
+('Calle de la piruleta3', 28000, 'Madrid', 'Madrid');
 
-INSERT INTO empleados (id_tienda, empleado_nombre, empleado_apellidos, empleado_nif, empleado_telefono, empleado_cocinero, empleado_repartidor) VALUES
+INSERT INTO empleados (id_tienda, nombre, apellidos, nif, telefono, cocinero, repartidor) VALUES
 (1, 'Juan', 'Perez', '123456789', 666666667, 1, 0),
 (2, 'Maria', 'Garcia', '123456789', 666666668, 0, 1),
 (3, 'Pedro', 'Gonzalez', '123456789', 666666669, 1, 0);
 
 
-INSERT INTO reparto_docmicilio (id_repartidor, fecha_hora_reparto) VALUES
-(1, '2021-01-01 12:00'),
-(2, '2021-01-01 12:30');
-
+INSERT INTO reparto_docmicilio (id_repartidor, id_comanda, fecha_hora_reparto) VALUES
+(1,1, '2021-01-01 12:00'),
+(2,2, '2021-01-01 12:30');
 /*
 
 Consultas
