@@ -41,14 +41,15 @@ CREATE TABLE clientes (
 DROP TABLE IF EXISTS empleados;
 
 CREATE TABLE empleados (
-  id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  nombre_empleado VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS monturas;
 
 CREATE TABLE monturas (
   id_montura INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  tipo_montura VARCHAR(45) NOT NULL
+  tipo_montura ENUM('flotant','pasta','metàlica') NOT NULL
 );
 
 DROP TABLE IF EXISTS gafas;
@@ -66,7 +67,8 @@ CREATE TABLE gafas (
   id_montura INT NOT NULL,
   id_proveedor INT NOT NULL,
   FOREIGN KEY (id_montura) REFERENCES monturas (id_montura),
-  FOREIGN KEY (id_proveedor) REFERENCES proveedor (id_proveedor)
+  FOREIGN KEY (id_proveedor) REFERENCES proveedor (id_proveedor),
+  UNIQUE (marca_gafa, id_proveedor)
 );
 
 DROP TABLE IF EXISTS ventas;
@@ -86,13 +88,11 @@ CREATE TABLE ventas (
 -- monturas
 
 INSERT INTO monturas (tipo_montura) VALUES 
-('Flotante'),
-('Pasta'),
-('Metálica');
+(1),
+(2),
+(3);
 
 -- clientes
-
-
 
 INSERT INTO clientes (direccion_cliente,telefono_cliente, correo_electronico_cliente, fecha_registro_cliente, nuevo_cliente, id_cliente_que_recomienda) VALUES 
 ('Calle de la piruleta', '666666666', 'cliente1@gmail.com', '2020-01-01', 0, NULL),
@@ -116,18 +116,17 @@ INSERT INTO proveedor(nombre,direccion,telefono,fax, nif) VALUES
 -- empleados
 
 INSERT INTO empleados VALUES 
-(1),
-(2),
-(3),
-(4);
+('Oscar', 1),
+('Claudio', 2),
+('Anna', 3),
+('Sofia', 4);
 
 -- gafas
-
 
 INSERT INTO gafas(marca_gafa, graducion_izq, graducacion_drc,tipo_montura, color_montura, color_lente_izq, color_lente_drc, precio, id_montura, id_proveedor) VALUES 
 ('Rayban', 1.5, 2.5, 1, 'Negra', 'Azul', 'Azul', 100, 1, 1),
 ('Oklay', 1.5, 2.5, 2, 'Negra', 'Azul', 'Azul', 100, 2, 2),
-('Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 3);
+('Rayban', 1.5, 2.5, 3, 'Negra', 'Azul', 'Azul', 100, 3, 1);
 
 -- ventas
 
@@ -135,8 +134,6 @@ INSERT INTO ventas(gafa_vendida, empleado_que_vende, cliente_que_compra, fecha_v
 (1, 1, 1, '2020-01-01 01:00:00'),
 (2, 2, 2, '2020-01-01 02:00:00'),
 (3, 3, 3, '2020-01-01 03:00:00');
-
-
 
 /*
 
