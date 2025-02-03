@@ -67,10 +67,55 @@ db.createCollection("glasses", {
             frame_type: { bsonType: "string" },
             frame_color:{bsonType: "string"},
             provider:{bsonType: "objectId"},
-            price: { bsonType: "double" }
+            price: { bsonType: "double" },
+            employee_id: { bsonType: "objectId" },
+            sale_date: { bsonType: "date" }
         }
       }
     },
     validationLevel: "strict",
     validationAction: "error"
   });
+
+  db.createCollection('provider', {
+    validator: {
+      bsonType: "object",
+      required: ["name", "adrress", "telephone", "fax", "nif"],
+        properties: {
+          name: {bsonType: "string"},
+          adrress: {
+            bsonTyoe: "object",
+            required: ["street", "number", "floor", "door", "city", "postal_code", "country"],
+            properties: {
+              street: {bsonType: "string"},
+              number: {bsonType: "int"},
+              floor: {bsonType: "string"},
+              door:{bsonType: "string"},
+              city:{bsonType: "string"},
+              postal_code:{bsonType: "int"},
+              country:{bsonType: "string"}
+            }
+          },
+          telephone: {bsonType: "string"},
+          fax: {bsonType: "string"},
+          nif: {bsonType: "string"}
+        }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+
+  db.createCollection("employees", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["name"],
+        properties: {
+          name: { bsonType: "string" }
+        }
+      }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+  

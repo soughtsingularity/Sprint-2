@@ -24,7 +24,19 @@ db.createCollection("glasses", {
           frame_type: { bsonType: "string" },
           frame_color:{bsonType: "string"},
           provider:{bsonType: "objectId"},
-          price: { bsonType: "double" }
+          price: { bsonType: "double" },
+          sales: {
+          bsonType: "array",
+          items: {
+            bsonType: "object",
+            required: ["client_id", "employee_id", "purchase_date"],
+            properties: {
+              client_id: { bsonType: "objectId" },
+              employee_id: { bsonType: "objectId" },
+              purchase_date: { bsonType: "date" }
+            }
+          }
+        }
       }
     }
   },
@@ -40,7 +52,7 @@ db.createCollection("providers",{
     required:["name", "address", "telephone", "fax", "nif"],
     properties:{
       name:{bsonType: "string"},
-      address:{bsonType: "array",
+      address:{bsonType: "object",
         items:{
           bsonType: "object",
           required:["street", "number", "floor", "door", "city", "postal_code", "country"],
@@ -86,20 +98,22 @@ db.createCollection("clients", {
               register_date:{bsonType: "date"},
               new_client:{bsonType: "bool"},
               refered_by:{bsonType: "objectId"},
-              last_shoping:{
-                  bsonType:"array",
-                  items:{
-                      bsonType:"object",
-                      required:["glass_id", "purchase_date"],
-                      properties:{
-                          glass_id: {bsonType:"objectId"},
-                          purchase_date: {bsonType:"date"},
-                          employee_id: { bsonType: "objectId" }
-                      }
-                  }
-              }
           }
       }
+  },
+  validationLevel: "strict",
+  validationAction: "error"
+});
+
+db.createCollection("employees", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name"],
+      properties: {
+        name: { bsonType: "string" }
+      }
+    }
   },
   validationLevel: "strict",
   validationAction: "error"
